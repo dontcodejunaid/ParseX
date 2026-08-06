@@ -1,0 +1,46 @@
+{
+  "name": "resume-parser-app",
+  "version": "1.0.0",
+  "description": "Production-ready modular PDF Resume Parser built with Node.js, Express, and React",
+  "main": "resume-parser.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node resume-parser.js",
+    "server": "nodemon server/server.js",
+    "client": "npm --prefix client run dev",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "test": "npx jest --config=jest.config.js",
+    "build:sample-pdfs": "node scripts/generate_sample_pdfs.js"
+  },
+  "keywords": [
+    "resume",
+    "parser",
+    "pdf-parse",
+    "nodejs",
+    "express",
+    "react",
+    "regex",
+    "jest"
+  ],
+  "author": "Full Stack Developer",
+  "license": "MIT",
+  "dependencies": {
+    "@google/generative-ai": "^0.24.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "express-validator": "^7.1.0",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.5-lts.1",
+    "pdf-lib": "^1.17.1",
+    "pdf-parse": "^1.1.1",
+    "pdf2json": "^4.0.3",
+    "pdfjs-dist": "^2.16.105",
+    "pdfkit": "^0.15.0"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "jest": "^29.7.0",
+    "nodemon": "^3.1.0"
+  }
+}

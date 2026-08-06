@@ -1,0 +1,78 @@
+{
+  "name": "Sarah Jenkins",
+  "email": "sarah.jenkins@devmail.org",
+  "phone": "+1-415-555-0199",
+  "linkedin": "https://linkedin.com/in/sarahjenkins-dev",
+  "github": "https://github.com/sarah-jenkins",
+  "portfolio": "https://devmail.org",
+  "location": "Austin, TX",
+  "summary": "Backend & Cloud Engineer specializing in distributed databases, Node.js microservices, and Python. SKILLS & EXPERTISE Programming Languages: Python, JavaScript, Go, C++ Frameworks: Django, FastAPI, Express.js, NestJS Databases: PostgreSQL, MongoDB, Redis, Elasticsearch Tools & DevOps: Kubernetes, Docker, Terraform, Git, GCP",
+  "skills": {
+    "languages": [
+      "JavaScript",
+      "Python",
+      "C++",
+      "Go"
+    ],
+    "frameworks": [
+      "Node.js",
+      "Express",
+      "Express.js",
+      "NestJS",
+      "Django",
+      "FastAPI"
+    ],
+    "libraries": [],
+    "databases": [
+      "MongoDB",
+      "PostgreSQL",
+      "Redis",
+      "Elasticsearch"
+    ],
+    "tools": [
+      "Git",
+      "GitHub",
+      "Docker",
+      "Kubernetes",
+      "GCP",
+      "Jenkins"
+    ],
+    "technologies": []
+  },
+  "experience": [
+    {
+      "company": "CloudScale Labs",
+      "title": "Backend Lead",
+      "duration": "2021 - Present",
+      "location": "",
+      "description": "Engineered real-time data ingestion pipeline handling 50k events per second."
+    }
+  ],
+  "education": [
+    {
+      "degree": "Master of Science in Computer Engineering",
+      "college": "UT Austin",
+      "university": "UT Austin",
+      "cgpa": "",
+      "percentage": "Percentage: 92.5%",
+      "startYear": "2019",
+      "endYear": "2021"
+    }
+  ],
+  "projects": [
+    {
+      "name": "Distributed Task Queue  GitHub taskqueue",
+      "description": "Built robust Redis-backed async task processing system for high-concurrency microservices.",
+      "technologies": [
+        "Redis"
+      ],
+      "github": "https://github.com/sarah-jenkins/"
+    }
+  ],
+  "certifications": [
+    "Certified Kubernetes Administrator (CKA)"
+  ],
+  "achievements": [
+    "Employee of the Year 2022 at CloudScale Labs."
+  ]
+}

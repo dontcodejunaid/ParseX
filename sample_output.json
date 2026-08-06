@@ -1,0 +1,118 @@
+{
+  "name": "John Doe",
+  "email": "john.doe@example.com",
+  "phone": "+91-9876543210",
+  "linkedin": "https://linkedin.com/in/johndoe",
+  "github": "https://github.com/johndoe",
+  "portfolio": "https://johndoe.dev",
+  "location": "San Francisco, CA",
+  "summary": "Senior Full Stack Software Engineer with 5+ years of experience building scalable web apps. Passionate about clean architecture, microservices, micro-frontend frameworks, and modern Node.js APIs.",
+  "skills": {
+    "languages": [
+      "JavaScript",
+      "TypeScript",
+      "Python",
+      "HTML",
+      "CSS",
+      "SQL"
+    ],
+    "frameworks": [
+      "React",
+      "Node.js",
+      "Express.js",
+      "Next.js"
+    ],
+    "libraries": [
+      "Redux",
+      "Tailwind CSS",
+      "PDF-Parse"
+    ],
+    "databases": [
+      "MongoDB",
+      "PostgreSQL",
+      "Redis"
+    ],
+    "tools": [
+      "Docker",
+      "Git",
+      "AWS",
+      "GitHub",
+      "Vite"
+    ],
+    "technologies": []
+  },
+  "experience": [
+    {
+      "company": "ABC Technologies",
+      "title": "Senior Software Engineer",
+      "duration": "Jan 2023 - Present",
+      "location": "San Francisco, CA",
+      "description": "Architected RESTful microservices processing 1M+ daily transactions using Node.js and MongoDB. Led frontend modernization project using React, Redux, and Tailwind CSS improving speed by 40%."
+    },
+    {
+      "company": "Tech Solutions Inc",
+      "title": "Software Engineer",
+      "duration": "Jun 2020 - Dec 2022",
+      "location": "",
+      "description": "Developed internal developer dashboard using Express.js, PostgreSQL, and React. Integrated automated CI/CD pipeline using Docker and GitHub Actions."
+    }
+  ],
+  "education": [
+    {
+      "degree": "Bachelor of Technology",
+      "college": "Stanford University",
+      "university": "Stanford University",
+      "cgpa": "3.9 / 4.0",
+      "percentage": "",
+      "startYear": "2016",
+      "endYear": "2020"
+    }
+  ],
+  "projects": [
+    {
+      "name": "Cloud AI Resume Parser",
+      "description": "Built high-performance Node.js PDF parsing backend with 95% section extraction accuracy. Tech Stack: Node.js, Express, React, Vite, Jest",
+      "technologies": [
+        "Node.js",
+        "Express",
+        "React",
+        "Vite",
+        "Jest"
+      ],
+      "github": "https://github.com/johndoe/resume-parser"
+    }
+  ],
+  "certifications": [
+    "AWS Certified Solutions Architect Associate (2023)",
+    "Meta Certified Senior Frontend Developer (2022)"
+  ],
+  "achievements": [
+    "Winner of Hackathon 2023 out of 150 competing engineering teams.",
+    "Published open-source JavaScript utility package with over 50,000 weekly downloads."
+  ],
+  "aiAssessment": {
+    "atsScore": 92,
+    "scoreBreakdown": {
+      "formatting": 95,
+      "skillRelevance": 92,
+      "experienceImpact": 90,
+      "educationQualifications": 94
+    },
+    "assetVerdict": "High-Value Asset",
+    "verdictSummary": "John Doe is a highly valuable technical asset with 5+ years of full-stack experience, proven microservices architecture capabilities, and strong academic credentials.",
+    "keyStrengths": [
+      "Demonstrated experience in high-concurrency microservices processing 1M+ transactions.",
+      "Comprehensive tech stack spanning modern frontend (React, Next.js) and backend (Node.js, PostgreSQL, Redis).",
+      "Clear, quantifiable achievements and cloud certifications (AWS Certified Solutions Architect)."
+    ],
+    "areasForImprovement": [
+      "Include direct live deployment URLs for featured projects alongside GitHub links.",
+      "Add security certification or testing framework methodologies to tools list."
+    ],
+    "recommendedRoles": [
+      "Senior Full Stack Software Engineer",
+      "Lead Backend Engineer",
+      "Technical Lead / Microservices Specialist"
+    ]
+  }
+}
