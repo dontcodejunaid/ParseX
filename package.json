@@ -5,7 +5,9 @@
   "main": "resume-parser.js",
   "type": "commonjs",
   "scripts": {
-    "start": "node resume-parser.js",
+    "start": "node server/server.js",
+    "build": "npm --prefix client install && npm --prefix client run build",
+    "vercel-build": "npm --prefix client install && npm --prefix client run build",
     "server": "nodemon server/server.js",
     "client": "npm --prefix client run dev",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
