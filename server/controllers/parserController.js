@@ -4,6 +4,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const os = require('os');
 const config = require('../config/config');
 const { parseResumePdf } = require('../services/resumeParserPipeline');
 
@@ -23,18 +24,25 @@ async function uploadAndParseResume(req, res, next) {
     const filePath = req.file.path;
     const parsedData = await parseResumePdf(filePath);
 
-    // Save parsed JSON file into output directory
-    if (!fs.existsSync(config.OUTPUT_DIR)) {
-      fs.mkdirSync(config.OUTPUT_DIR, { recursive: true });
+    let outputFileName = `parsed_${Date.now()}.json`;
+
+    // Safely attempt to write output file to output dir or tmpdir
+    try {
+      if (!fs.existsSync(config.OUTPUT_DIR)) {
+        fs.mkdirSync(config.OUTPUT_DIR, { recursive: true });
+      }
+      const outputPath = path.join(config.OUTPUT_DIR, outputFileName);
+      fs.writeFileSync(outputPath, JSON.stringify(parsedData, null, 2), 'utf8');
+    } catch (writeErr) {
+      console.warn('Could not write output file to disk:', writeErr.message);
     }
 
-    const outputFileName = `parsed_${Date.now()}.json`;
-    const outputPath = path.join(config.OUTPUT_DIR, outputFileName);
-
-    fs.writeFileSync(outputPath, JSON.stringify(parsedData, null, 2), 'utf8');
-
     // Clean up temporary uploaded PDF
-    fs.unlink(filePath, () => {});
+    try {
+      if (fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath);
+      }
+    } catch (cleanErr) {}
 
     return res.status(200).json({
       success: true,
@@ -44,7 +52,9 @@ async function uploadAndParseResume(req, res, next) {
     });
   } catch (error) {
     if (req.file && fs.existsSync(req.file.path)) {
-      fs.unlink(req.file.path, () => {});
+      try {
+        fs.unlinkSync(req.file.path);
+      } catch (cleanErr) {}
     }
     next(error);
   }
@@ -57,7 +67,7 @@ async function uploadAndParseResume(req, res, next) {
 function getSampleParsedData(req, res, next) {
   try {
     if (!fs.existsSync(config.SAMPLE_JSON_PATH)) {
-      return res.status(444).json({
+      return res.status(404).json({
         success: false,
         error: 'Sample JSON file not found'
       });
