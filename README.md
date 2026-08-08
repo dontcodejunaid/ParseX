@@ -1,53 +1,108 @@
-# ParseX - Enterprise PDF Resume Parser
+# ParseX - Enterprise PDF Resume Parser & AI ATS Analyzer
 
-[![Node.js Version](https://img.shields.io/badge/node.js-v18%2B%20%2F%20v22%20LTS-brightgreen)](https://nodejs.org)
-[![React](https://img.shields.io/badge/React-18%20%2F%2019-blue)](https://react.dev)
-[![Vite](https://img.shields.io/badge/Vite-5.x-purple)](https://vitejs.dev)
-[![Tailwind CSS](https://img.shields.io/badge/TailwindCSS-3.4-38bdf8)](https://tailwindcss.com)
-[![Jest](https://img.shields.io/badge/Jest-Unit%20Tests-red)](https://jestjs.io)
+[![Node.js Version](https://img.shields.io/badge/Node.js-v18%2B%20%2F%20v22%20LTS-brightgreen?logo=node.js)](https://nodejs.org)
+[![React](https://img.shields.io/badge/React-18%20%2F%2019-blue?logo=react)](https://react.dev)
+[![Vite](https://img.shields.io/badge/Vite-5.x-purple?logo=vite)](https://vitejs.dev)
+[![Tailwind CSS](https://img.shields.io/badge/TailwindCSS-3.4-38bdf8?logo=tailwindcss)](https://tailwindcss.com)
+[![Google Gemini](https://img.shields.io/badge/Google%20Gemini-1.5%20Flash-orange?logo=google)](https://deepmind.google/technologies/gemini/)
+[![Jest](https://img.shields.io/badge/Jest-Unit%20Tests-red?logo=jest)](https://jestjs.io)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-An enterprise-grade, modular Node.js & React application that extracts structured information from PDF resumes using pattern matching, heuristic algorithms, and regex rules.
+**ParseX** is an enterprise-grade, modular Node.js & React web application and CLI tool that extracts structured information from PDF resumes using regex rule matching, heuristic text segmentation algorithms, and **Google Gemini 1.5 Flash AI** candidate scoring.
+
+---
+
+## 📸 Application Screenshots & Visual Tour
+
+### 1. Landing Dashboard & Feature Overview
+![ParseX Home Dashboard](docs/images/home_page.png)
+
+### 2. Drag & Drop PDF Upload Interface
+![ParseX Upload Interface](docs/images/upload_page.png)
+
+### 3. Structured Data Results & Gemini AI Assessment
+![ParseX Structured Results](docs/images/results_page.png)
+
+### 4. Sleek Dark Mode Experience
+![ParseX Dark Mode Interface](docs/images/dark_mode_results.png)
 
 ---
 
 ## 📌 Project Overview
 
-**ParseX** accepts PDF resumes with various candidate section layouts and transforms raw document text into standardized, validated JSON objects. 
+**ParseX** accepts PDF resumes with complex multi-column section layouts, converting unformatted PDF text streams into clean, validated, and normalized JSON objects. 
 
-The application offers two modes of operation:
-1. **CLI Script Runner**: Execute `node resume-parser.js sample_resume_1.pdf` or `npm start sample_resume_1.pdf` for terminal parsing.
-2. **Full-Stack Web Dashboard & REST API**: Interactive React Vite UI with drag-and-drop PDF uploads, structured section cards, JSON code viewer, copy/download features, and dark mode.
-
----
-
-## ✨ Key Features
-
-- **Automated Section Detection**: Intelligently identifies headers like *Experience*, *Education*, *Skills*, *Projects*, *Certifications*, *Achievements*, and *Summary*.
-- **Personal Detail Extraction**: Extracts candidate full name, email, phone number, LinkedIn URL, GitHub URL, portfolio website, and location.
-- **Categorized Technical Skills**: Automatically groups skills into `Languages`, `Frameworks`, `Libraries`, `Databases`, `Tools`, and `Technologies`.
-- **Work History Parsing**: Segments company names, job titles, durations (e.g. `Jan 2023 - Present`), locations, and key responsibilities.
-- **Academic Credentials**: Extracts degree, university/college, CGPA / percentage scores, and start/end years.
-- **Projects & Links**: Captures project name, description, tech stack used, and GitHub repository links.
-- **Certifications & Achievements**: Lists professional licenses, certifications, awards, and hackathon achievements.
-- **Failure-Tolerant Engine**: Gracefully handles missing sections, unique layouts, or malformed data without crashing.
+### Dual Operational Modes
+1. **Full-Stack Web Dashboard & REST API**: Interactive React 19 + Vite dashboard featuring drag-and-drop PDF uploads, live progress tracking, structured section cards, AI ATS scoring breakdown, copy/download utilities, and dark mode.
+2. **CLI Engine Runner**: Fast terminal parsing via `node resume-parser.js sample_resume_1.pdf` for batch scripting or backend integrations.
 
 ---
 
-## 🛠️ Tech Stack
+## ✨ Key Features & Capabilities
 
-### Backend
-- **Node.js (v18+ / v22 LTS)**: Core runtime
-- **Express.js**: REST API server
-- **pdf-parse**: Fast PDF text extraction
-- **Multer**: Multipart upload handling with file type & size limits
-- **Jest**: Unit testing framework for parsers
+- 🤖 **Google Gemini 1.5 Flash AI Scoring**: Calculates an automated ATS compatibility score (0-100), key strengths, areas for improvement, and recommended hiring roles.
+- 🛡️ **Rule-Based Fallback Engine**: If no AI API key is configured, ParseX executes a zero-dependency deterministic rule engine to ensure 100% uptime.
+- 🔍 **Automated Section Classification**: Uses regex header matching and line proximity heuristics to segment sections (*Experience*, *Education*, *Skills*, *Projects*, *Certifications*, *Achievements*, *Summary*).
+- 👤 **Personal Detail Extraction**: Extracts candidate full name, email, phone number, LinkedIn URL, GitHub URL, portfolio links, and geographical location.
+- ⚡ **Categorized Skill Classifier**: Groups technical skills into `Languages`, `Frameworks`, `Libraries`, `Databases`, and `Tools`.
+- 💼 **Work History Timeline**: Captures company names, job titles, durations (e.g. `Jan 2023 - Present`), locations, and bullet point responsibilities.
+- 🎓 **Academic Credential Parser**: Extracts degree type, university/college name, CGPA / percentage scores, and start/end years.
+- 🚀 **Projects & Repo Extraction**: Extracts project titles, detailed summaries, tech stacks used, and live demo / GitHub repository links.
+- 🌙 **Modern Glassmorphism UI**: High-contrast, responsive light & dark theme built with React, Vite, and Tailwind CSS.
 
-### Frontend
-- **React 18/19**: Dynamic dashboard components
-- **Vite**: Lightning-fast build tool and dev server
-- **Tailwind CSS**: Modern glassmorphism UI with Dark/Light modes
-- **Lucide Icons**: Clean UI icons
-- **Axios**: API requests with progress bar support
+---
+
+## 🏗️ System Architecture & Data Flow
+
+```mermaid
+flowchart TD
+    A[User PDF Upload / CLI Argument] --> B[PDF Text Extraction - pdf-parse]
+    B --> C[Text Normalizer & Line Cleaner]
+    C --> D[Section Detector & Block Segmenter]
+    
+    subgraph Modular Sub-Parser Engine
+        D --> E1[Personal Detail Parser]
+        D --> E2[Summary Parser]
+        D --> E3[Skills Categorizer]
+        D --> E4[Experience Timeline Parser]
+        D --> E5[Education & Score Parser]
+        D --> E6[Projects & Link Parser]
+        D --> E7[Certifications & Achievements Parser]
+    end
+    
+    E1 & E2 & E3 & E4 & E5 & E6 & E7 --> F[Aggregated Resume Data Object]
+    
+    F --> G{Gemini API Key Configured?}
+    G -- Yes --> H[Google Gemini 1.5 Flash AI Evaluator]
+    G -- No --> I[Deterministic Rule-Based ATS Fallback Engine]
+    
+    H --> J[Final JSON Output + ATS Score Report]
+    I --> J
+    
+    J --> K[React UI Dashboard / JSON Download / Terminal Output]
+```
+
+---
+
+## 🛠️ Tech Stack & Dependencies
+
+### Backend Stack
+| Technology | Description |
+| :--- | :--- |
+| **Node.js (v18 / v22 LTS)** | Asynchronous JavaScript Runtime |
+| **Express.js (v4.19)** | RESTful API HTTP Server |
+| **Google Generative AI SDK** | Gemini 1.5 Flash Integration for ATS scoring |
+| **pdf-parse (v1.1)** | Fast server-side PDF stream buffer parsing |
+| **Multer (v1.4)** | Multipart form-data file upload handler |
+| **Jest (v29.7)** | Unit testing framework for sub-parsers and pipeline |
+
+### Frontend Stack
+| Technology | Description |
+| :--- | :--- |
+| **React 19 / Vite 5** | High-performance Single Page Application (SPA) |
+| **Tailwind CSS 3.4** | Custom utility styling with dark mode context |
+| **Lucide Icons** | Modern UI vector icons |
+| **Axios** | Client-side API request handler |
 
 ---
 
@@ -55,56 +110,61 @@ The application offers two modes of operation:
 
 ```
 ParseX/
-├── package.json                   # Root package & scripts (dev, start, test)
+├── package.json                   # Root package configuration & npm scripts
 ├── resume-parser.js               # CLI Entry point (node resume-parser.js <file.pdf>)
 ├── jest.config.js                 # Jest unit test configuration
-├── sample_output.json             # Reference output JSON format
+├── sample_output.json             # Reference output JSON schema
 ├── sample_resume_1.pdf            # Sample resume 1 (Software Engineer)
 ├── sample_resume_2.pdf            # Sample resume 2 (Backend & Cloud Lead)
-├── README.md                      # Complete documentation
+├── README.md                      # Project documentation
+├── .env                           # Environment variables (GEMINI_API_KEY, PORT)
+│
+├── docs/
+│   └── images/                    # UI Screenshots for documentation
+│       ├── home_page.png
+│       ├── upload_page.png
+│       ├── results_page.png
+│       └── dark_mode_results.png
 │
 ├── scripts/
-│   └── generate_sample_pdfs.js    # PDF generator script for sample resumes
+│   └── generate_sample_pdfs.js    # PDFKit script to generate sample test PDFs
 │
-├── server/                        # Backend Engine & REST API
-│   ├── config/                    # Environment & configuration paths
-│   ├── controllers/               # Express request handlers
-│   ├── middlewares/               # Multer upload & error handling
-│   ├── routes/                    # REST API routes (/api/parser/...)
-│   ├── services/                  # Main parsing pipeline orchestration
-│   ├── parsers/                   # Modular extraction sub-parsers
+├── server/                        # Express Backend Engine & Parsers
+│   ├── server.js                  # Express server listener
+│   ├── config/                    # Server configuration settings
+│   ├── controllers/               # Express request handlers (parserController.js)
+│   ├── middlewares/               # Multer upload & file validation rules
+│   ├── routes/                    # API routes (/api/parser/...)
+│   ├── services/                  # Core Business Logic & Orchestration
+│   │   ├── resumeParserPipeline.js # Main multi-step parsing orchestrator
+│   │   └── aiAssessmentService.js  # Gemini 1.5 Flash & Fallback ATS Engine
+│   │
+│   ├── parsers/                   # Modular Sub-Parser Extraction Modules
 │   │   ├── sectionDetector.js     # Header classifier & block segmentation
-│   │   ├── personalParser.js      # Name, email, phone, links, location
-│   │   ├── summaryParser.js       # Summary/about text extraction
-│   │   ├── skillsParser.js        # Technical skills categorizer
-│   │   ├── experienceParser.js    # Work experience entries
-│   │   ├── educationParser.js     # Education records & scores
-│   │   ├── projectsParser.js      # Project details & repository links
+│   │   ├── personalParser.js      # Name, email, phone, social links, location
+│   │   ├── summaryParser.js       # Executive summary / about text extraction
+│   │   ├── skillsParser.js        # Categorized skills matcher
+│   │   ├── experienceParser.js    # Work experience entries & bullet extractor
+│   │   ├── educationParser.js     # Degree, institution, dates & CGPA scores
+│   │   ├── projectsParser.js      # Project names, descriptions & repo links
 │   │   ├── certificationsParser.js# Certifications list
-│   │   └── achievementsParser.js  # Awards & accomplishments
-│   ├── utils/                     # Regex patterns & text helpers
+│   │   └── achievementsParser.js  # Hackathons, honors & awards
+│   │
+│   ├── utils/                     # Regex expressions & text cleaning utilities
 │   │   ├── regexHelpers.js
 │   │   └── textUtils.js
-│   ├── tests/                     # Jest unit tests
-│   │   ├── sectionDetector.test.js
-│   │   ├── personalParser.test.js
-│   │   ├── skillsParser.test.js
-│   │   └── pipeline.test.js
-│   ├── uploads/                   # Temporary upload directory
-│   └── output/                    # Stored output JSON files
+│   └── tests/                     # Jest unit test suite
 │
 └── client/                        # React + Vite + Tailwind CSS Frontend
-    ├── package.json
+    ├── index.html
     ├── vite.config.js
     ├── tailwind.config.js
-    ├── index.html
     └── src/
-        ├── components/            # Navbar, Footer, FileUploader, SectionCard, JSONViewer
-        ├── context/               # ThemeContext (Dark/Light mode)
+        ├── components/            # Header, FileUploader, SectionCards, ScoreBadge
+        ├── context/               # ThemeContext (Dark/Light mode switch)
         ├── pages/                 # Home, Upload, Result, About, NotFound
-        ├── services/              # Axios API calls
-        ├── App.jsx
-        └── main.jsx
+        ├── services/              # Axios API service integrations
+        └── App.jsx
 ```
 
 ---
@@ -112,26 +172,40 @@ ParseX/
 ## 🚀 Setup & Installation Instructions
 
 ### Prerequisites
-- **Node.js**: v18.0.0 or higher (v22 LTS recommended)
-- **npm**: v9.0.0 or higher
+- **Node.js**: `v18.0.0` or higher (`v22 LTS` recommended)
+- **npm**: `v9.0.0` or higher
 
-### 1. Install Dependencies
+### 1. Clone & Install Dependencies
 
-Install root backend dependencies:
 ```bash
+# Clone the repository
+git clone https://github.com/your-username/ParseX.git
+cd ParseX
+
+# Install root & backend dependencies
 npm install
-```
 
-Install client frontend dependencies:
-```bash
+# Install frontend client dependencies
 cd client
 npm install
 cd ..
 ```
 
-### 2. Generate Sample PDFs (Optional)
+### 2. Configure Environment Variables
 
-To regenerate `sample_resume_1.pdf` and `sample_resume_2.pdf`:
+Create a `.env` file in the root directory:
+
+```env
+PORT=5000
+NODE_ENV=development
+# Optional: Set your Google Gemini API key for AI ATS candidate evaluations
+GEMINI_API_KEY=YOUR_GEMINI_API_KEY
+```
+
+### 3. Build Sample Test PDFs (Optional)
+
+Regenerate sample resume PDF documents in the project root:
+
 ```bash
 npm run build:sample-pdfs
 ```
@@ -140,43 +214,43 @@ npm run build:sample-pdfs
 
 ## 💻 Usage & Execution
 
-### Running via CLI (Command Line)
+### Option A: Command Line Interface (CLI)
 
-You can parse any PDF resume file directly from the command line:
+Run direct terminal parsing on any local PDF file:
 
 ```bash
 node resume-parser.js sample_resume_1.pdf
 ```
 
-or using `npm start`:
+Or using npm script shortcut:
 
 ```bash
 npm start sample_resume_2.pdf
 ```
 
-Output: The formatted JSON will be printed to `stdout` and saved to `server/output/`.
+*The extracted JSON results will be printed to stdout and saved in `server/output/`.*
 
 ---
 
-### Running the Full-Stack Web Application
+### Option B: Full-Stack Web Application
 
-To run both the Express backend API (Port 5000) and the React Vite client (Port 5173) concurrently:
+Launch both Express Backend (`http://localhost:5000`) and React Frontend (`http://localhost:5173`) concurrently:
 
 ```bash
 npm run dev
 ```
 
-Open your browser at `http://localhost:5173`.
+Open your browser and navigate to: **`http://localhost:5173`**
 
-Alternatively, run backend and client individually in separate terminals:
-- Backend: `npm run server` (runs on http://localhost:5000)
-- Client: `npm run client` (runs on http://localhost:5173)
+To run services individually:
+- Backend Server: `npm run server`
+- React Frontend: `npm run client`
 
 ---
 
-## 🧪 Running Unit Tests
+## 🧪 Unit Testing
 
-Run the full Jest test suite verifying text normalization, section detection, sub-parsers, and full pipeline integration:
+Execute the complete Jest test suite covering regex pattern matchers, sub-parsers, section detection, and end-to-end pipeline execution:
 
 ```bash
 npm test
@@ -184,12 +258,12 @@ npm test
 
 ---
 
-## 🌐 REST API Documentation
+## 🌐 REST API Reference
 
-### 1. Upload & Parse Resume PDF
+### 1. Upload & Parse PDF Resume
 - **Endpoint**: `POST /api/parser/upload`
-- **Content-Type**: `multipart/form-data`
-- **Body Parameter**: `resume` (PDF file)
+- **Header**: `Content-Type: multipart/form-data`
+- **Body**: `resume` (PDF binary file)
 - **Response**:
 ```json
 {
@@ -204,7 +278,7 @@ npm test
     "github": "https://github.com/johndoe",
     "portfolio": "https://johndoe.dev",
     "location": "San Francisco, CA",
-    "summary": "Senior Full Stack Software Engineer...",
+    "summary": "Senior Full Stack Software Engineer with 5+ years of experience...",
     "skills": {
       "languages": ["JavaScript", "TypeScript", "Python"],
       "frameworks": ["React", "Node.js", "Express.js"],
@@ -212,93 +286,77 @@ npm test
       "databases": ["MongoDB", "PostgreSQL"],
       "tools": ["Docker", "Git", "AWS"]
     },
-    "experience": [...],
-    "education": [...],
-    "projects": [...],
-    "certifications": [...],
-    "achievements": [...]
+    "experience": [
+      {
+        "company": "ABC Technologies",
+        "title": "Senior Software Engineer",
+        "duration": "Jan 2023 - Present",
+        "location": "San Francisco, CA",
+        "description": "Architected RESTful microservices processing 1M+ daily transactions using Node.js and MongoDB."
+      }
+    ],
+    "education": [
+      {
+        "degree": "Bachelor of Technology",
+        "college": "Stanford University",
+        "university": "Stanford University",
+        "cgpa": "3.9 / 4.0",
+        "startYear": "2016",
+        "endYear": "2020"
+      }
+    ],
+    "projects": [
+      {
+        "name": "Cloud AI Resume Parser",
+        "description": "Built high-performance Node.js PDF parsing backend...",
+        "technologies": ["Node.js", "Express", "React", "Vite"],
+        "github": "https://github.com/johndoe/resume-parser"
+      }
+    ],
+    "certifications": ["AWS Certified Solutions Architect Associate (2023)"],
+    "achievements": ["Winner of Hackathon 2023 out of 150 competing engineering teams."],
+    "aiAssessment": {
+      "atsScore": 92,
+      "scoreBreakdown": {
+        "formatting": 95,
+        "skillRelevance": 92,
+        "experienceImpact": 90,
+        "educationQualifications": 94
+      },
+      "assetVerdict": "High-Value Asset",
+      "verdictSummary": "John Doe is a highly valuable technical asset with 5+ years of full-stack experience...",
+      "keyStrengths": ["Demonstrated experience in high-concurrency microservices."],
+      "areasForImprovement": ["Include direct live deployment URLs for featured projects."],
+      "recommendedRoles": ["Senior Full Stack Software Engineer", "Lead Backend Engineer"]
+    }
   }
 }
 ```
 
-### 2. Get Sample Parsed JSON
-- **Endpoint**: `GET /api/parser/sample`
-- **Response**: Returns standard sample JSON format.
-
-### 3. Download Parsed JSON File
+### 2. Download Parsed Output JSON
 - **Endpoint**: `GET /api/parser/download/:filename`
-- **Response**: Downloads the requested extracted `.json` output file.
+- **Description**: Triggers direct file download of saved JSON results.
 
 ---
 
-## 📋 Sample Output JSON Format
+## 💡 Assumptions & Edge Case Resilience
 
-```json
-{
-  "name": "John Doe",
-  "email": "john.doe@example.com",
-  "phone": "+91-9876543210",
-  "linkedin": "https://linkedin.com/in/johndoe",
-  "github": "https://github.com/johndoe",
-  "portfolio": "https://johndoe.dev",
-  "location": "San Francisco, CA",
-  "summary": "Senior Full Stack Software Engineer with 5+ years of experience...",
-  "skills": {
-    "languages": ["JavaScript", "TypeScript", "Python", "SQL"],
-    "frameworks": ["React", "Node.js", "Express.js", "Next.js"],
-    "libraries": ["Redux", "Tailwind CSS"],
-    "databases": ["MongoDB", "PostgreSQL", "Redis"],
-    "tools": ["Docker", "Git", "AWS"]
-  },
-  "experience": [
-    {
-      "company": "ABC Technologies",
-      "title": "Senior Software Engineer",
-      "duration": "Jan 2023 - Present",
-      "location": "San Francisco, CA",
-      "description": "Architected RESTful microservices processing 1M+ daily transactions using Node.js and MongoDB."
-    }
-  ],
-  "education": [
-    {
-      "degree": "Bachelor of Technology",
-      "college": "Stanford University",
-      "university": "Stanford University",
-      "cgpa": "3.9 / 4.0",
-      "percentage": "",
-      "startYear": "2016",
-      "endYear": "2020"
-    }
-  ],
-  "projects": [
-    {
-      "name": "Cloud AI Resume Parser",
-      "description": "Built high-performance Node.js PDF parsing backend...",
-      "technologies": ["Node.js", "Express", "React", "Vite", "Jest"],
-      "github": "https://github.com/johndoe/resume-parser"
-    }
-  ],
-  "certifications": [
-    "AWS Certified Solutions Architect Associate (2023)"
-  ],
-  "achievements": [
-    "Winner of Hackathon 2023 out of 150 competing engineering teams."
-  ]
-}
-```
-
----
-
-## 💡 Assumptions & Limitations
-
-1. **Digital PDF Format**: The core parser relies on digital text layers extracted via `pdf-parse`. Pure scanned image PDFs require an OCR engine (e.g., Tesseract.js).
-2. **Text Normalization**: Multi-column PDF templates are extracted sequentially line by line. Section detection uses clean line splitting and fuzzy matching.
-3. **Language**: Designed for English language resumes.
+1. **Text-Layer PDFs**: ParseX processes digital vector PDFs containing readable text layers. Scanned bitmap PDFs are recommended to run through OCR preprocessing.
+2. **Flexible Section Classifier**: Recognizes section headers regardless of uppercase/lowercase formatting or variations (e.g. `WORK HISTORY`, `EXPERIENCE`, `PROFESSIONAL BACKGROUND`).
+3. **Multi-Column Processing**: Multi-column PDF templates are normalized sequentially line-by-line using block boundary heuristics.
+4. **Graceful Degradation**: Missing resume sections return empty structured arrays (`[]`) or empty strings (`""`) without causing pipeline runtime exceptions.
 
 ---
 
 ## 🔮 Future Improvements
 
-- Add Tesseract.js OCR integration for scanned image PDFs.
-- Add support for Word `.docx` file formats.
-- Add AI/LLM semantic extraction fallback option for unformatted resumes.
+- 📄 **OCR Engine Integration**: Integrate `Tesseract.js` for scanning non-searchable image-based PDFs.
+- 📝 **Docx Support**: Add parsing support for Microsoft Word `.docx` documents.
+- ⚡ **Batch Processing API**: Add bulk zip upload processing for enterprise recruitment pipelines.
+
+---
+
+## 📄 License
+
+This project is licensed under the [MIT License](LICENSE).
+
