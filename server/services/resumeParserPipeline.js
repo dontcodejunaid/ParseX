@@ -116,14 +116,16 @@ function parseResumeText(rawText) {
 }
 
 const { generateAIAssessment } = require('./aiAssessmentService');
+const { matchResumeWithJd } = require('./jdMatcherService');
 
 /**
  * Parses PDF file buffer or path into structured JSON resume.
  * Uses high-accuracy pdfjs-dist with pdf-parse and pdf2json fallbacks.
  * @param {Buffer|string} input - PDF buffer or file path
+ * @param {string} [jobDescription] - Optional target job description
  * @returns {Promise<Object>} Structured JSON output
  */
-async function parseResumePdf(input) {
+async function parseResumePdf(input, jobDescription = '') {
   let dataBuffer;
 
   if (Buffer.isBuffer(input)) {
@@ -168,6 +170,11 @@ async function parseResumePdf(input) {
   // Attach Gemini AI ATS score & asset evaluation
   parsedData.aiAssessment = await generateAIAssessment(parsedData);
 
+  // Attach Job Description matching analysis if JD provided
+  if (jobDescription && jobDescription.trim()) {
+    parsedData.jdMatch = await matchResumeWithJd(parsedData, jobDescription);
+  }
+
   return parsedData;
 }
 
@@ -175,3 +182,4 @@ module.exports = {
   parseResumeText,
   parseResumePdf
 };
+

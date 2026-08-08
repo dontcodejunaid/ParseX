@@ -3,28 +3,48 @@ import { Link } from 'react-router-dom';
 import {
   User, Briefcase, GraduationCap, Code2, Award, FileText, CheckCircle2,
   ExternalLink, Github, Linkedin, Globe, Mail, Phone, MapPin, Download, RefreshCw, Layers,
-  Sparkles, TrendingUp, AlertTriangle, Target, Check, ShieldCheck
+  ShieldCheck, Target, AlertTriangle, Check, ArrowLeft, Users
 } from 'lucide-react';
 
 import SectionCard from '../components/SectionCard';
 import JSONViewer from '../components/JSONViewer';
 import LoadingSkeleton from '../components/LoadingSkeleton';
+import JobMatchCard from '../components/JobMatchCard';
+import BatchLeaderboard from '../components/BatchLeaderboard';
 import { getSampleParsedData } from '../services/api';
 
 export default function ResultPage() {
   const [data, setData] = useState(null);
+  const [batchCandidates, setBatchCandidates] = useState(null);
+  const [selectedCandidateIndex, setSelectedCandidateIndex] = useState(null);
   const [fileName, setFileName] = useState('sample_output.json');
-  const [activeTab, setActiveTab] = useState('dashboard'); // 'dashboard' or 'json'
+  const [activeTab, setActiveTab] = useState('dashboard'); // 'dashboard', 'json', or 'leaderboard'
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const cached = localStorage.getItem('parsedResumeResult');
+    const cachedBatch = localStorage.getItem('parsedBatchCandidates');
+    const cachedSingle = localStorage.getItem('parsedResumeResult');
     const cachedName = localStorage.getItem('parsedFileName');
 
-    if (cached) {
+    if (cachedBatch) {
       try {
-        setData(JSON.parse(cached));
+        const candidates = JSON.parse(cachedBatch);
+        if (candidates && candidates.length > 0) {
+          setBatchCandidates(candidates);
+          setData(candidates[0].fullData);
+          setFileName(candidates[0].fileName || 'batch_resumes.json');
+          setActiveTab('leaderboard');
+          setLoading(false);
+          return;
+        }
+      } catch (e) {}
+    }
+
+    if (cachedSingle) {
+      try {
+        setData(JSON.parse(cachedSingle));
         if (cachedName) setFileName(cachedName);
+        setActiveTab('dashboard');
         setLoading(false);
       } catch (e) {
         fetchSampleData();
@@ -48,10 +68,17 @@ export default function ResultPage() {
     }
   };
 
-  if (loading) return <LoadingSkeleton />;
-  if (!data) return <div className="text-center py-20 text-[#001524]/60 dark:text-[#FDE5D4]/60">No parsed resume data available.</div>;
+  const handleSelectCandidateFromBatch = (candidateFullData) => {
+    setData(candidateFullData);
+    setActiveTab('dashboard');
+  };
 
-  const ai = data.aiAssessment || {};
+  if (loading) return <LoadingSkeleton />;
+  if (!data && !batchCandidates) {
+    return <div className="text-center py-20 text-[#001524]/60 dark:text-[#FDE5D4]/60">No parsed resume data available.</div>;
+  }
+
+  const ai = data?.aiAssessment || {};
   const atsScore = ai.atsScore || 85;
 
   return (
@@ -64,19 +91,33 @@ export default function ResultPage() {
             Extraction & AI Analysis Results
           </span>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-[#001524] dark:text-[#FDE5D4]">
-            {data.name || 'Candidate Resume'}
+            {activeTab === 'leaderboard' ? 'Batch Candidate Leaderboard' : (data?.name || 'Candidate Resume')}
           </h1>
           <p className="text-xs text-[#001524]/60 dark:text-[#FDE5D4]/60 mt-1 font-medium">
-            File: {fileName}
+            {batchCandidates ? `${batchCandidates.length} Resumes Batch Processed` : `File: ${fileName}`}
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
-          {/* View Mode Toggle */}
+        <div className="flex items-center gap-3 flex-wrap">
+          {/* View Mode Switcher */}
           <div className="flex items-center bg-[#FDE5D4]/40 dark:bg-[#071E2E] p-1 rounded-xl border border-[#D6CC99]/40 dark:border-[#445D48]/40">
+            {batchCandidates && (
+              <button
+                onClick={() => setActiveTab('leaderboard')}
+                className={`px-3 py-1.5 rounded-lg text-xs font-extrabold transition-all flex items-center gap-1.5 ${
+                  activeTab === 'leaderboard'
+                    ? 'bg-[#445D48] text-[#FDE5D4] dark:bg-[#D6CC99] dark:text-[#001524] shadow-sm'
+                    : 'text-[#001524]/70 dark:text-[#FDE5D4]/70'
+                }`}
+              >
+                <Users className="w-3.5 h-3.5" />
+                <span>Leaderboard</span>
+              </button>
+            )}
+
             <button
               onClick={() => setActiveTab('dashboard')}
-              className={`px-4 py-2 rounded-lg text-xs font-extrabold transition-all ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-extrabold transition-all ${
                 activeTab === 'dashboard'
                   ? 'bg-[#445D48] text-[#FDE5D4] dark:bg-[#D6CC99] dark:text-[#001524] shadow-sm'
                   : 'text-[#001524]/70 dark:text-[#FDE5D4]/70'
@@ -86,7 +127,7 @@ export default function ResultPage() {
             </button>
             <button
               onClick={() => setActiveTab('json')}
-              className={`px-4 py-2 rounded-lg text-xs font-extrabold transition-all ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-extrabold transition-all ${
                 activeTab === 'json'
                   ? 'bg-[#445D48] text-[#FDE5D4] dark:bg-[#D6CC99] dark:text-[#001524] shadow-sm'
                   : 'text-[#001524]/70 dark:text-[#FDE5D4]/70'
@@ -106,11 +147,31 @@ export default function ResultPage() {
         </div>
       </div>
 
-      {activeTab === 'json' ? (
+      {/* Render Leaderboard View */}
+      {activeTab === 'leaderboard' && batchCandidates ? (
+        <BatchLeaderboard
+          candidates={batchCandidates}
+          onSelectCandidate={handleSelectCandidateFromBatch}
+        />
+      ) : activeTab === 'json' ? (
         <JSONViewer data={data} filename={fileName} />
       ) : (
+        /* Render Structured Single Candidate View */
         <div className="space-y-8">
           
+          {batchCandidates && (
+            <button
+              onClick={() => setActiveTab('leaderboard')}
+              className="inline-flex items-center gap-2 text-xs font-extrabold text-[#445D48] dark:text-[#D6CC99] hover:underline"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              <span>Back to Candidate Leaderboard</span>
+            </button>
+          )}
+
+          {/* Feature 1: Target Job Description Match Card */}
+          {data.jdMatch && <JobMatchCard jdMatch={data.jdMatch} />}
+
           {/* Google Gemini AI Assessment & ATS Score Hero Card */}
           <div className="glass-card rounded-3xl p-6 sm:p-8 border border-[#D6CC99]/60 dark:border-[#445D48]/50 shadow-xl space-y-6">
             <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 pb-6 border-b border-[#D6CC99]/40 dark:border-[#445D48]/40">
